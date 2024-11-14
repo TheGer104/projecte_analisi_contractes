@@ -7,6 +7,13 @@ import os
 class ContractAnalyzer:
     def __init__(self, config):
         self.config = config
+        # Detecta la ruta de mythril en el sistema
+        self.mythril_path = shutil.which("myth")
+        if not self.mythril_path:
+            raise ValueError("Mythril no está instalado o no está en el PATH.")
+    
+    def __init__(self, config):
+        self.config = config
         self.mythril_path = config.get("mythril_path")
         if not self.mythril_path:
             raise ValueError("The 'mythril_path' is not set in the configuration file. Please specify the full path to the Mythril executable.")
