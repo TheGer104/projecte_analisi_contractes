@@ -1,13 +1,8 @@
 import os
 import json
-from src.utils.data_handler import DataHandler
-from src.analysis.contract_analyzer import ContractAnalyzer
 from src.reports.report_generator import ReportGenerator
+from src.analysis.contract_analyzer import ContractAnalyzer
 from src.config.config_loader import load_config
-
-def list_contracts(directory):
-    """Lista los contratos disponibles en el directorio especificado."""
-    return [f for f in os.listdir(directory) if f.endswith('.sol')]
 
 def ci_analysis():
     config = load_config()
