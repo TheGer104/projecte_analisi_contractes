@@ -6,22 +6,23 @@ from datetime import datetime
 
 class ReportGenerator:
     
-    def __init__(self, output_path="src/reports", output_format="json"):
+    def __init__(self, output_path, output_format="json"):
         self.output_path = output_path
         self.output_format = output_format
-
-    def generate_report(self, analysis_results, contract_name=""):
+    
+    def generate_report(self, analysis_results, contract_name):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        report_filename = f"{contract_name}_{timestamp}.json"
-        report_path = os.path.join(self.output_path, report_filename)
+        filename = f"{contract_name}_{timestamp}.json"
+        filepath = os.path.join(self.output_path, filename)
 
-        # Guardamos los resultados en JSON
-        with open(report_path, "w") as report_file:
-            # Si existe una salida cruda de Mythril, la incluimos en el JSON
-            if "mythril_analysis_raw" in analysis_results:
-                analysis_results["mythril_analysis_raw"] = analysis_results["mythril_analysis_raw"]
+        # Si el archivo existe, lo elimina para permitir la sobrescritura
+        if os.path.exists(filepath):
+            os.remove(filepath)
 
+        with open(filepath, "w") as report_file:
             json.dump(analysis_results, report_file, indent=4)
+
+        print(f"Reporte generado en formato {self.output_format} para {contract_name}")
 
 
     def _generate_json_report(self, data):
