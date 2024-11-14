@@ -2,6 +2,7 @@ import json
 import re
 import subprocess
 import pdb
+import os 
 
 class ContractAnalyzer:
     def __init__(self, config):
@@ -65,10 +66,12 @@ class ContractAnalyzer:
         """Run Mythril analysis on the selected contract."""
         print(f"Running Mythril analysis on {contract_path}...")
         try:
+            myth_path = os.getenv("MYTHRIL_PATH", "myth")  # Usa "myth" como valor predeterminado
             result = subprocess.check_output(
-                [self.mythril_path, "analyze", contract_path, "-o", "json"],
+                [myth_path, "-x", contract_path],
                 stderr=subprocess.STDOUT,
                 text=True
+            )
             )
             mythril_output = json.loads(result)
             if "issues" in mythril_output:
