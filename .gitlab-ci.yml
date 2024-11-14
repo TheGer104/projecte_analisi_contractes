@@ -1,0 +1,16 @@
+stages:
+  - analysis
+
+# Job para ejecutar el análisis de contratos inteligentes
+analysis_job:
+  stage: analysis
+  image: python:3.10  # Usa una imagen con Python 3.10 o la versión necesaria
+  before_script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt  # Instala dependencias
+  script:
+    - python src/ci_analysis.py  # Ejecuta el análisis sin GUI
+  artifacts:
+    paths:
+      - reports/ci_report.json  # Guarda el reporte como artefacto para revisión
+    expire_in: 1 week

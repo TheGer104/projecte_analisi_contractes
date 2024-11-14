@@ -1,0 +1,5 @@
+[
+  "tests/report_tests/test_report_generator.py::TestReportGenerator::test_save_as_csv",
+  "tests/report_tests/test_report_generator.py::TestReportGenerator::test_save_as_html",
+  "tests/report_tests/test_report_generator.py::TestReportGenerator::test_save_as_json"
+]

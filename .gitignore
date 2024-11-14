@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches
+*.cache
+*.log
+
+# Configuración de entornos virtuales y dependencias
+venv/
+myenv/
+.env
+
+# Configuración de IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de configuración
+config.json
+
+# Resultados de análisis y reportes generados
+reports/
+tests/contracts/
+*.sol
+
+# Archivos de Jupyter
+.ipynb_checkpoints
+
+# Otros archivos innecesarios
+*.DS_Store
+*.egg
+*.egg-info/
+dist/
+build/
+*.spec
