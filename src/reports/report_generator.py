@@ -6,8 +6,9 @@ from datetime import datetime
 
 class ReportGenerator:
     
-    def __init__(self, output_path="src/reports"):
+    def __init__(self, output_path="src/reports", output_format="json"):
         self.output_path = output_path
+        self.output_format = output_format
 
     def generate_report(self, analysis_results, contract_name=""):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
