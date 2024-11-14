@@ -57,12 +57,12 @@ class ContractAnalyzer:
         print(f"Running Mythril analysis on {contract_path}...")
         try:
             result = subprocess.check_output(
-                ["myth", "analyze", contract_path, "--output", "json"],
+                ["myth", "analyze", contract_path],
                 stderr=subprocess.STDOUT,
                 text=True
             )
             
-            # Intentamos decodificar el resultado como JSON
+            # Intentamos decodificar el resultado como JSON, pero si falla, devolvemos el texto plano
             try:
                 mythril_output = json.loads(result)
                 if "issues" in mythril_output:
@@ -71,9 +71,7 @@ class ContractAnalyzer:
                 else:
                     print("Analysis completed successfully without any issues.")
                     return {"mythril_analysis": {"success": True, "issues": []}}
-    
             except json.JSONDecodeError:
-                # Si la salida no es JSON, se captura el error y se muestra el resultado original
                 print("Error decoding JSON from Mythril output. Returning raw output.")
                 return {"mythril_analysis": {"error": "Non-JSON output", "raw_output": result}}
     
@@ -81,7 +79,6 @@ class ContractAnalyzer:
             print("Analysis completed with error. Full output below:")
             print(e.output)
             
-            # Intentamos decodificar el error como JSON
             try:
                 mythril_output = json.loads(e.output)
                 if "issues" in mythril_output:
@@ -89,10 +86,10 @@ class ContractAnalyzer:
                 else:
                     print("No issues found in output.")
                     return {"mythril_analysis": {"success": True, "issues": []}}
-                    
             except json.JSONDecodeError:
                 print("Error decoding JSON from Mythril error output. Returning raw error output.")
                 return {"mythril_analysis": {"error": "Non-JSON error output", "raw_output": e.output}}
+
 
 
 
