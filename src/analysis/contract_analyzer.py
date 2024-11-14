@@ -66,12 +66,13 @@ class ContractAnalyzer:
         """Run Mythril analysis on the selected contract."""
         print(f"Running Mythril analysis on {contract_path}...")
         try:
+            # Usa la ruta completa de mythril encontrada por shutil.which
             result = subprocess.check_output(
-                ["python3", "-m", "mythril", "-x", contract_path],
+                [self.mythril_path, "-x", contract_path],
                 stderr=subprocess.STDOUT,
                 text=True
             )
-    
+
             # Intenta decodificar el resultado como JSON
             try:
                 mythril_output = json.loads(result)
@@ -81,7 +82,7 @@ class ContractAnalyzer:
                 # Si falla la decodificación, muestra la salida en texto
                 print("Error decoding JSON from Mythril output, outputting as text.")
                 return {"mythril_analysis": {"success": False, "raw_output": result}}
-    
+
         except subprocess.CalledProcessError as e:
             print("Analysis completed with error.")
             try:
