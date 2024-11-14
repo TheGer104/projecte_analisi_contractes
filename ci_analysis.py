@@ -10,47 +10,29 @@ def list_contracts(directory):
     return [f for f in os.listdir(directory) if f.endswith('.sol')]
 
 def ci_analysis():
-    # Cargar la configuración
     config = load_config()
+    contract_analyzer = ContractAnalyzer(config)
+    report_generator = ReportGenerator(config["output_path"], config["output_format"])
 
-    # Directorio de contratos (ajusta la ruta según la estructura de tu proyecto)
-    contracts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'tests/contracts'))
+    contracts_dir = "tests/contracts"  # Ajusta esta ruta si es necesario
+    for contract_file in os.listdir(contracts_dir):
+        if contract_file.endswith(".sol"):
+            contract_path = os.path.join(contracts_dir, contract_file)
+            print(f"Analizando contrato: {contract_file}")
 
-    # Verificar si existe el directorio de contratos
-    if not os.path.exists(contracts_dir):
-        print(f"El directorio '{contracts_dir}' no existe.")
-        return
+            # Leer el código del contrato
+            with open(contract_path, "r") as file:
+                contract_code = file.read()
 
-    # Listar contratos disponibles
-    contracts = list_contracts(contracts_dir)
-    if not contracts:
-        print("No se encontraron contratos para analizar.")
-        return
+            # Realizar el análisis
+            analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
 
-    # Seleccionar el primer contrato como ejemplo o modificar para seleccionar dinámicamente
-    for contract_name in contracts:
-        contract_path = os.path.join(contracts_dir, contract_name)
-        print(f"Analizando contrato: {contract_name}")
+            # Extraer el nombre del contrato sin la extensión ".sol"
+            contract_name = os.path.splitext(contract_file)[0]
 
-        # Cargar el código del contrato
-        data_handler = DataHandler(config)
-        contract_code = data_handler.load_contract(contract_path)
-
-        # Crear instancia del analizador de contratos
-        contract_analyzer = ContractAnalyzer(config)
-
-        # Ejecutar el análisis completo (análisis básico + análisis con Mythril)
-        analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
-
-        # Guardar los resultados en formato JSON para el CI/CD
-        output_path = config["output_path"]
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-
-        # Generar el reporte en el formato deseado
-        report_generator = ReportGenerator(config)
-        report_generator.generate_report(analysis_results, format="json")
-        print(f"Reporte generado en formato JSON para {contract_name}")
+            # Generar el reporte usando el nombre del contrato
+            report_generator.generate_report(analysis_results, contract_name=contract_name)
+            print(f"Reporte generado en formato {config['output_format']} para {contract_file}")
 
 if __name__ == "__main__":
     ci_analysis()
