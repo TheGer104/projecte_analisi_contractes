@@ -57,29 +57,42 @@ class ContractAnalyzer:
         print(f"Running Mythril analysis on {contract_path}...")
         try:
             result = subprocess.check_output(
-                ["myth", "analyze", contract_path],  # Cambia '-x' por 'analyze'
+                ["myth", "analyze", contract_path, "--output", "json"],
                 stderr=subprocess.STDOUT,
                 text=True
             )
-    
-            print("Mythril output:", result)
-    
+            
+            # Intentamos decodificar el resultado como JSON
             try:
                 mythril_output = json.loads(result)
-                print("Mythril analysis completed with JSON output.")
-                return {"mythril_analysis": mythril_output} if "issues" in mythril_output else {"mythril_analysis": {"success": True, "issues": []}}
+                if "issues" in mythril_output:
+                    print("Analysis completed successfully with issues found.")
+                    return {"mythril_analysis": mythril_output}  # Devuelve los resultados de Mythril directamente
+                else:
+                    print("Analysis completed successfully without any issues.")
+                    return {"mythril_analysis": {"success": True, "issues": []}}
+    
             except json.JSONDecodeError:
-                print("Error decoding JSON from Mythril output, outputting as text.")
-                return {"mythril_analysis": {"success": False, "raw_output": result}}
+                # Si la salida no es JSON, se captura el error y se muestra el resultado original
+                print("Error decoding JSON from Mythril output. Returning raw output.")
+                return {"mythril_analysis": {"error": "Non-JSON output", "raw_output": result}}
     
         except subprocess.CalledProcessError as e:
-            print("Analysis completed. Full output below:")
+            print("Analysis completed with error. Full output below:")
             print(e.output)
+            
+            # Intentamos decodificar el error como JSON
             try:
                 mythril_output = json.loads(e.output)
-                return {"mythril_analysis": mythril_output} if "issues" in mythril_output else {"mythril_analysis": {"success": True, "issues": []}}
+                if "issues" in mythril_output:
+                    return {"mythril_analysis": mythril_output}
+                else:
+                    print("No issues found in output.")
+                    return {"mythril_analysis": {"success": True, "issues": []}}
+                    
             except json.JSONDecodeError:
-                print("Error decoding JSON from Mythril error output.")
-                return {"mythril_analysis": {"success": False, "raw_output": e.output}}
+                print("Error decoding JSON from Mythril error output. Returning raw error output.")
+                return {"mythril_analysis": {"error": "Non-JSON error output", "raw_output": e.output}}
+
 
 
