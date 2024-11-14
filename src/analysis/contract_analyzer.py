@@ -71,7 +71,6 @@ class ContractAnalyzer:
                 stderr=subprocess.STDOUT,
                 text=True
             )
-            )
             mythril_output = json.loads(result)
             if "issues" in mythril_output:
                 print("Analysis completed successfully with issues found.")
