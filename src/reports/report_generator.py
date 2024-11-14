@@ -22,8 +22,6 @@ class ReportGenerator:
 
             json.dump(analysis_results, report_file, indent=4)
 
-        print(f"Reporte JSON generado en {report_path}")
-
 
     def _generate_json_report(self, data):
         filepath = os.path.join(self.output_path, "report.json")
