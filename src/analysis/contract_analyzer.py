@@ -3,6 +3,7 @@ import re
 import subprocess
 import pdb
 import os 
+import shutil
 
 class ContractAnalyzer:
     def __init__(self, config):
