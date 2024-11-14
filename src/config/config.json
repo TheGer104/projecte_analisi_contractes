@@ -1,0 +1,11 @@
+{
+    "mythril_path": "/mnt/c/Users/thege/OneDrive/Documentos/projecte_analisi_contractes/myenv/bin/myth",
+    "analysis": {
+        "static_analysis": true,
+        "symbolic_analysis": true,
+        "dynamic_analysis": true,
+        "vulnerability_detection": true
+    },
+    "output_format": "json",
+    "output_path": "reports/"
+}
