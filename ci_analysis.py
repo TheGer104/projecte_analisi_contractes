@@ -14,7 +14,7 @@ def ci_analysis():
     config = load_config()
 
     # Directorio de contratos (ajusta la ruta según la estructura de tu proyecto)
-    contracts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../tests/contracts'))
+    contracts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'tests/contracts'))
 
     # Verificar si existe el directorio de contratos
     if not os.path.exists(contracts_dir):
