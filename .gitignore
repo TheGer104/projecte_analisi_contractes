@@ -20,14 +20,7 @@ myenv/
 
 # Archivos de configuración sensibles
 # Ignoramos config.json solo si contiene información sensible, si no, puedes eliminar esta línea
-# config.json
-
-# Resultados de análisis y reportes generados (permite la carpeta reports pero no los archivos temporales)
-# Elimina la línea `reports/` para subir la carpeta reports completa
-reports/*.json
-
-# Ignora archivos de contratos específicos si son temporales o puedes subir ejemplos necesarios
-tests/contracts/*.sol
+config.json
 
 # Archivos de Jupyter (si los usas en el proyecto puedes eliminarlos)
 .ipynb_checkpoints
@@ -39,3 +32,5 @@ tests/contracts/*.sol
 dist/
 build/
 *.spec
+
+
