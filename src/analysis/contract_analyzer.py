@@ -74,9 +74,8 @@ class ContractAnalyzer:
         """Run Mythril analysis on the selected contract."""
         print(f"Running Mythril analysis on {contract_path}...")
         try:
-            # Usa la ruta completa de mythril encontrada por shutil.which
             result = subprocess.check_output(
-                [self.mythril_path, "-x", contract_path],
+                ["myth", "-x", contract_path],
                 stderr=subprocess.STDOUT,
                 text=True
             )
