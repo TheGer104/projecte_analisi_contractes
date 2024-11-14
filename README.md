@@ -1,1 +1,1 @@
-Contract Analyzer 1.0
+Contract Analyzer 1.0 o/
