@@ -63,35 +63,35 @@ class ContractAnalyzer:
         return analysis_results
 
     def analyze_with_mythril(self, contract_path):
-    """Run Mythril analysis on the selected contract."""
-    print(f"Running Mythril analysis on {contract_path}...")
-    try:
-        result = subprocess.check_output(
-            ["python3", "-m", "mythril", "-x", contract_path],
-            stderr=subprocess.STDOUT,
-            text=True
-        )
-
-        # Intenta decodificar el resultado como JSON
+        """Run Mythril analysis on the selected contract."""
+        print(f"Running Mythril analysis on {contract_path}...")
         try:
-            mythril_output = json.loads(result)
-            print("Mythril analysis completed with JSON output.")
-            return {"mythril_analysis": mythril_output} if "issues" in mythril_output else {"mythril_analysis": {"success": True, "issues": []}}
-        except json.JSONDecodeError:
-            # Si falla la decodificación, muestra la salida en texto
-            print("Error decoding JSON from Mythril output, outputting as text.")
-            return {"mythril_analysis": {"success": False, "raw_output": result}}
-
-    except subprocess.CalledProcessError as e:
-        print("Analysis completed with error.")
-        try:
-            # Intenta decodificar la salida de error como JSON
-            mythril_output = json.loads(e.output)
-            return {"mythril_analysis": mythril_output} if "issues" in mythril_output else {"mythril_analysis": {"success": True, "issues": []}}
-        except json.JSONDecodeError:
-            # En caso de error de JSON, devuelve la salida como texto
-            print("Error decoding JSON from Mythril error output.")
-            return {"mythril_analysis": {"success": False, "raw_output": e.output}}
+            result = subprocess.check_output(
+                ["python3", "-m", "mythril", "-x", contract_path],
+                stderr=subprocess.STDOUT,
+                text=True
+            )
+    
+            # Intenta decodificar el resultado como JSON
+            try:
+                mythril_output = json.loads(result)
+                print("Mythril analysis completed with JSON output.")
+                return {"mythril_analysis": mythril_output} if "issues" in mythril_output else {"mythril_analysis": {"success": True, "issues": []}}
+            except json.JSONDecodeError:
+                # Si falla la decodificación, muestra la salida en texto
+                print("Error decoding JSON from Mythril output, outputting as text.")
+                return {"mythril_analysis": {"success": False, "raw_output": result}}
+    
+        except subprocess.CalledProcessError as e:
+            print("Analysis completed with error.")
+            try:
+                # Intenta decodificar la salida de error como JSON
+                mythril_output = json.loads(e.output)
+                return {"mythril_analysis": mythril_output} if "issues" in mythril_output else {"mythril_analysis": {"success": True, "issues": []}}
+            except json.JSONDecodeError:
+                # En caso de error de JSON, devuelve la salida como texto
+                print("Error decoding JSON from Mythril error output.")
+                return {"mythril_analysis": {"success": False, "raw_output": e.output}}
 
 
 
