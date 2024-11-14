@@ -4,19 +4,26 @@ import csv
 import pandas as pd  
 
 class ReportGenerator:
-    def __init__(self, config):
-        self.output_path = config.get("output_path", "reports/")
-        os.makedirs(self.output_path, exist_ok=True)
+    
+    def __init__(self, output_path, output_format="json"):
+        self.output_path = output_path
+        self.output_format = output_format
 
-    def generate_report(self, data, format="json"):
-        if format == "json":
-            self._generate_json_report(data)
-        elif format == "csv":
-            self._generate_csv_report(data)
-        elif format == "html":
-            self._generate_html_report(data)
+    def generate_report(self, analysis_results, contract_name):
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        report_filename = f"{contract_name}_{timestamp}.{self.output_format}"
+        report_path = os.path.join(self.output_path, report_filename)
+
+        if self.output_format == "json":
+            with open(report_path, "w") as report_file:
+                json.dump(analysis_results, report_file, indent=4)
+            print(f"Reporte JSON generado en {report_path}")
         else:
-            raise ValueError("Formato no soportado. Usa 'json', 'csv' o 'html'.")
+            print("Formato de reporte no soportado actualmente.")
+
 
     def _generate_json_report(self, data):
         filepath = os.path.join(self.output_path, "report.json")
