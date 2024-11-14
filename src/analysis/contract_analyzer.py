@@ -73,7 +73,7 @@ class ContractAnalyzer:
                 return {"mythril_analysis": {"success": False, "raw_output": result}}
     
         except subprocess.CalledProcessError as e:
-            print("Analysis completed with error. Full output below:")
+            print("Analysis completed. Full output below:")
             print(e.output)
             try:
                 mythril_output = json.loads(e.output)
