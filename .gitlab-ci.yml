@@ -8,6 +8,8 @@ analysis_job:
   before_script:
     - python -m pip install --upgrade pip
     - pip install -r requirements.txt  # Instala dependencias
+    - apt-get update
+    - apt-get install -y python3-tk
   script:
     - python src/ci_analysis.py  # Ejecuta el análisis sin GUI
   artifacts:
