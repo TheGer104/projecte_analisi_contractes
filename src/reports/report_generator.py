@@ -6,23 +6,24 @@ from datetime import datetime
 
 class ReportGenerator:
     
-    def __init__(self, output_path, output_format="json"):
-        self.output_path = output_path
+    def __init__(self, output_dir="reports", output_format="json"):
+        self.output_dir = output_dir
         self.output_format = output_format
-    
-    def generate_report(self, analysis_results, contract_name):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"{contract_name}_{timestamp}.json"
-        filepath = os.path.join(self.output_path, filename)
+        os.makedirs(self.output_dir, exist_ok=True)  # Crear el directorio si no existe
 
-        # Si el archivo existe, lo elimina para permitir la sobrescritura
-        if os.path.exists(filepath):
-            os.remove(filepath)
+    def generate_report(self, analysis_results, report_name):
+        # Crear el nombre del archivo según el formato
+        file_extension = self.output_format
+        report_filename = f"{report_name}.{file_extension}"
+        report_path = os.path.join(self.output_dir, report_filename)
 
-        with open(filepath, "w") as report_file:
-            json.dump(analysis_results, report_file, indent=4)
+        # Guardar el reporte en el formato especificado
+        with open(report_path, "w") as report_file:
+            if self.output_format == "json":
+                json.dump(analysis_results, report_file, indent=4)
+            # Aquí puedes agregar lógica para otros formatos si es necesario
 
-        print(f"Reporte generado en formato {self.output_format} para {contract_name}")
+        return report_path
 
 
     def _generate_json_report(self, data):
