@@ -41,7 +41,7 @@ jobs:
 
     - name: Upload reports
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3  # Actualizado a v3
       with:
         name: reports
         path: reports/  # Asegúrate de que este sea el directorio donde se guardan los reportes
