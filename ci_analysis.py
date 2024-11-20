@@ -32,8 +32,13 @@ def ci_analysis():
         print("Realizando análisis básico...")
         basic_analysis_results = contract_analyzer.full_analysis(contract_code)
         
+        # Imprimir resultados del análisis básico
+        print("\nResultados del análisis básico:")
+        for key, value in basic_analysis_results.items():
+            print(f"{key}: {value}")
+        
         # Realizar el análisis avanzado (Mythril)
-        print("Realizando análisis con Mythril...")
+        print("\nRealizando análisis con Mythril...")
         mythril_analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
         
         # Combinar resultados en un único reporte
@@ -48,7 +53,7 @@ def ci_analysis():
         report_name = f"{contract_name}_{timestamp}"
         report_path = report_generator.generate_report(combined_results, report_name)
         
-        print(f"Reporte generado: {report_path}")
+        print(f"\nReporte generado: {report_path}")
 
 if __name__ == "__main__":
     ci_analysis()
