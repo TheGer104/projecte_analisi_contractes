@@ -28,23 +28,25 @@ def ci_analysis():
 
         print(f"Analizando contrato: {contract_file}")
         
-        # Realizar el análisis básico
+        # Realizar el análisis básico (interno)
+        print("Realizando análisis básico...")
         basic_analysis_results = contract_analyzer.full_analysis(contract_code)
         
-        # Realizar el análisis complejo (incluyendo Mythril)
-        complex_analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
-
-        # Combinar ambos resultados
-        analysis_results = {
+        # Realizar el análisis avanzado (Mythril)
+        print("Realizando análisis con Mythril...")
+        mythril_analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
+        
+        # Combinar resultados en un único reporte
+        combined_results = {
             "basic_analysis": basic_analysis_results,
-            "complex_analysis": complex_analysis_results
+            "mythril_analysis": mythril_analysis_results
         }
         
         # Generar el reporte con la fecha y hora en el nombre
         contract_name = os.path.splitext(contract_file)[0]
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         report_name = f"{contract_name}_{timestamp}"
-        report_path = report_generator.generate_report(analysis_results, report_name)
+        report_path = report_generator.generate_report(combined_results, report_name)
         
         print(f"Reporte generado: {report_path}")
 
