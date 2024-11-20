@@ -74,7 +74,7 @@ class ContractAnalyzer:
                 return {"mythril_analysis_raw": result}
 
         except subprocess.CalledProcessError as e:
-            print("Analysis completed with error. Full output below:")
+            print("Analysis completed. Full output below:")
             print(e.output)
             # Intentamos capturar el error como JSON o lo guardamos como texto
             try:
