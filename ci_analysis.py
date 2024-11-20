@@ -28,8 +28,17 @@ def ci_analysis():
 
         print(f"Analizando contrato: {contract_file}")
         
-        # Realizar el análisis
-        analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
+        # Realizar el análisis básico
+        basic_analysis_results = contract_analyzer.full_analysis(contract_code)
+        
+        # Realizar el análisis complejo (incluyendo Mythril)
+        complex_analysis_results = contract_analyzer.complex_analysis(contract_code, contract_path)
+
+        # Combinar ambos resultados
+        analysis_results = {
+            "basic_analysis": basic_analysis_results,
+            "complex_analysis": complex_analysis_results
+        }
         
         # Generar el reporte con la fecha y hora en el nombre
         contract_name = os.path.splitext(contract_file)[0]
