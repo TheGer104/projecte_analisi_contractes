@@ -1,14 +1,14 @@
 import json
 import re
 import subprocess
-import pdb
+import shutil
 
 class ContractAnalyzer:
-    def __init__(self, config):
-        self.config = config
-        self.mythril_path = config.get("mythril_path")
+    def __init__(self, config=None):
+        # Encuentra la ruta de 'myth' en el PATH del sistema
+        self.mythril_path = shutil.which("myth")
         if not self.mythril_path:
-            raise ValueError("The 'mythril_path' is not set in the configuration file. Please specify the full path to the Mythril executable.")
+            raise ValueError("Mythril no está instalado o no está en el PATH.")
 
     def static_analysis(self, contract_code):
         findings = {}
@@ -48,17 +48,7 @@ class ContractAnalyzer:
         findings['selfdestruct_detected'] = bool(re.search(r'\bselfdestruct\b', contract_code))
         return {"vulnerabilities": findings}
 
-
     def full_analysis(self, contract_code):
-        results = {}
-        results.update(self.static_analysis(contract_code))
-        results.update(self.symbolic_analysis(contract_code))
-        results.update(self.dynamic_analysis(contract_code))
-        results.update(self.detect_vulnerabilities(contract_code))
-        return results
-    
-    def basic_analysis(self, contract_code):
-        # Realiza los análisis estático, simbólico, dinámico y de vulnerabilidades
         results = {}
         results.update(self.static_analysis(contract_code))
         results.update(self.symbolic_analysis(contract_code))
@@ -106,4 +96,3 @@ class ContractAnalyzer:
                 return {"mythril_analysis": mythril_output}
             except json.JSONDecodeError:
                 return {"mythril_analysis_raw": e.output}
-
